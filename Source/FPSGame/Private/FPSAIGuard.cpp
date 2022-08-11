@@ -3,6 +3,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
+#include "UnrealNetwork.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Perception/PawnSensingComponent.h"
 
@@ -106,6 +107,11 @@ void AFPSAIGuard::OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, 
 }
 
 
+void AFPSAIGuard::OnRep_GuardState()
+{
+	OnStateChanged(GuardState);
+}
+
 void AFPSAIGuard::SetGuardState(EAIState NewState)
 {
 	if (GuardState == NewState)
@@ -154,4 +160,9 @@ void AFPSAIGuard::ResetOrientation()
 
 }
 
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
+}
 

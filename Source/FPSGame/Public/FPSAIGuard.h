@@ -25,6 +25,8 @@ public:
 	// Sets default values for this character's properties
 	AFPSAIGuard();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -57,9 +59,15 @@ protected:
 	UFUNCTION()
 	void ResetOrientation();
 
+	
+
 	FTimerHandle TimerHandle_ResetOrientation;
 
+	UPROPERTY(ReplicatedUsing=OnRep_GuardState)
 	EAIState GuardState;
+
+	UFUNCTION()
+	void OnRep_GuardState();
 
 	void SetGuardState(EAIState NewState);
 
